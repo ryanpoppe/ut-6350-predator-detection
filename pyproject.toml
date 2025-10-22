@@ -1,0 +1,25 @@
+[project]
+name = "ut-6350-predator-detection"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Ryan Poppe",email = "ryanpoppe42@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "pytorchwildlife @ git+https://github.com/microsoft/CameraTraps.git",
+    "lightning (>=2.5.5,<3.0.0)",
+    "omegaconf (>=2.3.0,<3.0.0)"
+
+]
+
+[dependency-groups]
+dev = [
+    "pytest (>=8.4.2,<9.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

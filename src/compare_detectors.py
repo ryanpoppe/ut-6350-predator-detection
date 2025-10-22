@@ -1,0 +1,62 @@
+from PytorchWildlife.models import detection as pw_detection
+from PytorchWildlife.models.detection import BaseDetector
+import torch
+import numpy as np
+from PIL import Image
+import supervision as sv
+
+from detetctor_metrics import DetectorMetrics
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
+mega_detector_5_a = pw_detection.MegaDetectorV5(device=device, pretrained=True, version="a")
+mega_detector_5_b = pw_detection.MegaDetectorV5(device=device, pretrained=True, version="b")
+mega_detector_6_yolov9_c = pw_detection.MegaDetectorV6(device=device, pretrained=True, version="MDV6-yolov9-c")
+mega_detector_6_yolov9_e = pw_detection.MegaDetectorV6(device=device, pretrained=True, version="MDV6-yolov9-e")
+mega_detector_6_yolov10_c = pw_detection.MegaDetectorV6(device=device, pretrained=True, version="MDV6-yolov10-c")
+mega_detector_6_yolov10_e = pw_detection.MegaDetectorV6(device=device, pretrained=True, version="MDV6-yolov10-e")
+#deepfaune_detector = pw_detection.DeepfauneDetector(device=device)
+herdnet_detector = pw_detection.HerdNet(device=device, version="general")
+
+detector_list = {
+    "MegaDetectorV5-a": mega_detector_5_a,
+    "MegaDetectorV5-b": mega_detector_5_b,
+    "MegaDetectorV6-yolov9-c": mega_detector_6_yolov9_c,
+    "MegaDetectorV6-yolov9-e": mega_detector_6_yolov9_e,
+    "MegaDetectorV6-yolov10-c": mega_detector_6_yolov10_c,
+    "MegaDetectorV6-yolov10-e": mega_detector_6_yolov10_e,
+    #"Deepfaune": deepfaune_detector,  # Disabled because the hosting URL seems down
+    "HerdNet general": herdnet_detector,
+}
+
+def main():
+    images_path = "iNaturalist/Gopherus_agassizii_images"
+    manual_identifications_path = "iNaturalist/Gopherus_agassizii_images/manual_identification.csv"
+
+    detector_metrics = DetectorMetrics(images_path, manual_identifications_path)
+
+    results = {}
+    for detector_name, detector in detector_list.items():
+        try:
+            print(f"Evaluating {detector_name}...")
+            metrics = detector_metrics.evaluate_detector(detector)
+            results[detector_name] = metrics
+            print(f"Results for {detector_name}: {metrics}")
+        except Exception as e:
+            print(f"Error evaluating {detector_name}: {e}")
+
+    print("Final comparison results:")
+    for detector_name, metrics in results.items():
+        """
+        the metrics dict contains: 
+        return {
+            "precision": precision,
+            "recall": recall,
+            "f1_score": f1_score,
+            "accuracy": accuracy
+        }
+        """
+        print(f"{detector_name}: Precision: {metrics['precision']:.4f}, Recall: {metrics['recall']:.4f}, F1 Score: {metrics['f1_score']:.4f}, Accuracy: {metrics['accuracy']:.4f}")
+
+if __name__ == "__main__":
+    main()
