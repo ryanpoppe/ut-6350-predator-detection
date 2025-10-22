@@ -54,12 +54,12 @@ class DetectorMetrics:
             for i, (xyxy, det_id) in enumerate(zip(results["detections"].xyxy, results["detections"].class_id)):
                 detected_class = self._detector_class_names.get(det_id, "unknown")
                 if detected_class == "animal":
-                    if manual_identification in ["animal", "Desert Tortoise", "Other Animal"]:
+                    if manual_identification == "animal":
                         true_positives += 1
                     else:
                         false_positives += 1
                 else:
-                    if manual_identification in ["animal", "Desert Tortoise", "Other Animal"]:
+                    if manual_identification == "animal":
                         false_negatives += 1
                     else:
                         true_negatives += 1
