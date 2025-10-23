@@ -205,3 +205,17 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+.DS_Store
+Makefile
+requirements.txt
+
+# Ignore image files inside iNaturalist subdirectories
+# Common image extensions (add more if needed)
+iNaturalist/*/**/*.jpg
+iNaturalist/*/**/*.jpeg
+iNaturalist/*/**/*.png
+iNaturalist/*/**/*.gif
+iNaturalist/*/**/*.webp
+iNaturalist/*/**/*.tif
+iNaturalist/*/**/*.tiff

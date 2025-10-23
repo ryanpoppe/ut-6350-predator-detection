@@ -30,8 +30,8 @@ detector_list = {
 }
 
 def main():
-    images_path = "iNaturalist/Gopherus_agassizii_images"
-    manual_identifications_path = "iNaturalist/Gopherus_agassizii_images/manual_identification.csv"
+    images_path = "iNaturalist/Corvus_corax_images"
+    manual_identifications_path = "iNaturalist/Corvus_corax_images/manual_identification.csv"
 
     detector_metrics = DetectorMetrics(images_path, manual_identifications_path)
 
@@ -57,6 +57,8 @@ def main():
         }
         """
         print(f"{detector_name}: Precision: {metrics['precision']:.4f}, Recall: {metrics['recall']:.4f}, F1 Score: {metrics['f1_score']:.4f}, Accuracy: {metrics['accuracy']:.4f}")
+        print(f"  False Positives ({len(metrics.get('false_positive_images', []))}): {metrics.get('false_positive_images', [])}")
+        print(f"  False Negatives ({len(metrics.get('false_negative_images', []))}): {metrics.get('false_negative_images', [])}")
 
 if __name__ == "__main__":
     main()
