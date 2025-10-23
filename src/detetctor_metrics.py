@@ -38,6 +38,8 @@ class DetectorMetrics:
         false_positives = 0
         false_negatives = 0
         true_negatives = 0
+        false_positive_images = set()
+        false_negative_images = set()
 
         for image_filename in image_filenames:
             image_path = os.path.join(self._images_path, image_filename)
@@ -58,9 +60,11 @@ class DetectorMetrics:
                         true_positives += 1
                     else:
                         false_positives += 1
+                        false_positive_images.add(image_filename)
                 else:
                     if manual_identification == "animal":
                         false_negatives += 1
+                        false_negative_images.add(image_filename)
                     else:
                         true_negatives += 1
 
@@ -72,5 +76,7 @@ class DetectorMetrics:
             "precision": precision,
             "recall": recall,
             "f1_score": f1_score,
-            "accuracy": accuracy
+            "accuracy": accuracy,
+            "false_positive_images": sorted(false_positive_images),
+            "false_negative_images": sorted(false_negative_images)
         }
