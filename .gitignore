@@ -207,6 +207,8 @@ marimo/_lsp/
 __marimo__/
 
 .DS_Store
+Makefile
+requirements.txt
 
 # Ignore image files inside iNaturalist subdirectories
 # Common image extensions (add more if needed)
